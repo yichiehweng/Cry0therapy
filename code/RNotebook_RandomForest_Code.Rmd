@@ -1,0 +1,54 @@
+---
+title: "Random Forest R Notebook"
+output: html_notebook
+---
+<!--Preliminaries-->
+```{r}
+install.packages("randomForest")
+```
+
+```{r}
+require(randomForest)
+```
+<!--Load Data-->
+```{r}
+df=read.csv("/home/yichiehweng/python/machineLearning/RandomForest/Cryotherapy/data/Cryotherapy.csv")
+```
+
+```{r}
+sapply(df, function(x) sum(is.na(x)))
+```
+```{r}
+df$Result_of_Treatment<-as.factor(df$Result_of_Treatment)
+```
+
+```{r}
+head(df,5)
+```
+<!--Create train and test data-->
+```{r}
+smp.size = floor(0.8*nrow(df)) 
+```
+```{r}
+set.seed(555)   
+```
+
+```{r}
+train.ind = ceiling(0.8*nrow(df))
+```
+
+```{r}
+train=sample(1:nrow(df),train.ind)
+```
+
+```{r}
+print(train)
+```
+<!--Train The Random Forest Classifier-->
+```{r}
+model=randomForest(Result_of_Treatment~.,data=df,importance=TRUE,proximity=TRUE,ntree=500,subset=train, na.action = na.fail)
+```
+```{r}
+print(model)
+```
+
